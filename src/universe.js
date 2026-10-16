@@ -11,6 +11,6 @@ export function createUniverse(name, description) {
   return {
     name: name.trim(),
     description: description.trim(),
-    isPublic: true
+    isPublic: false
   };
 }
