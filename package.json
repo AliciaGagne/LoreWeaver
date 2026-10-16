@@ -1,0 +1,10 @@
+{
+  "name": "lore-weaver",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Application de creation et de gestion d'univers fictifs",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
