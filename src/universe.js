@@ -1,3 +1,4 @@
+// Gestion des univers fictifs
 export function createUniverse(name, description) {
   if (typeof name !== "string" || name.trim() === "") {
     throw new Error("Le nom de l'univers est obligatoire.");
