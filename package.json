@@ -5,6 +5,8 @@
   "description": "Application de creation et de gestion d'univers fictifs",
   "type": "module",
   "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
     "test": "node --test"
   }
 }
