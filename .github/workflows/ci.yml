@@ -22,5 +22,8 @@ jobs:
           node-version: "24"
           package-manager-cache: false
 
+      - name: Installer les dependances
+        run: npm ci
+
       - name: Executer les tests
         run: npm test
