@@ -14,7 +14,7 @@ const __dirname = path.dirname(__filename);
 app.use(express.json());
 
 // Rend les fichiers HTML, CSS et JS accessibles
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "../public")));
 
 // Route de verification de l'application
 app.get("/api/health", (req, res) => {
