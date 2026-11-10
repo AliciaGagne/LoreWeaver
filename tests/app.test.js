@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 
-import app from "../app.js";
+import app from "../src/app.js";
 
 // Test de la route de verification
 test("La route health fonctionne", async (t) => {
