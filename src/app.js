@@ -24,14 +24,4 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// Tester la connexion PostgreSQL
-pool.query("SELECT NOW()", (err, result) => {
-  if (err) {
-    console.error("Erreur PostgreSQL :", err);
-  } else {
-    console.log("Connexion PostgreSQL réussie !");
-    console.log(result.rows);
-  }
-});
-
 export default app;
