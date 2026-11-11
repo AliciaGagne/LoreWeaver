@@ -1,7 +1,6 @@
 import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import pool from "./config/database.js";
 
 // Creation de l'application Express
 const app = express();
