@@ -59,4 +59,4 @@ Node.js et Express ont été retenus parce qu'ils correspondent aux besoins de L
 l'application avec JavaScript.
 
 Cette solution offre un compromis entre simplicité, flexibilité et possibilités d'évolution, ce qui me semble approprié pour un projet
-universitaire dont les fonctionnalités seront développées progressivement.
+réalisé au cours d'une session universitaire dont les fonctionnalités seront développées progressivement.
