@@ -250,3 +250,53 @@ La contrainte **UNIQUE (id_pers_source, id_pers_cible, type_relation)** évite l
 
 **Relations :** cette table représente des liens entre les personnages. Les relations peuvent être dirigées, par exemple « mentor de », ou réciproques, comme certaines amitiés. Les règles concernant les relations réciproques pourront être précisées lors du développement de cette fonctionnalité.
 
+
+
+## 3. Cardinalités et règles de cohérence
+
+Les relations entre les différentes tables permettent de représenter l'organisation des informations dans Lore Weaver.
+
+La relation entre **utilisateur** et **univers** est de type un-à-plusieurs (1-N). Chaque utilisateur peut créer plusieurs univers, mais chaque univers possède un seul propriétaire.
+
+Les relations entre **univers** et les tables **personnage**, **lieu**, **faction** et **evenement** sont également de type un-à-plusieurs (1-N). Un univers peut contenir un grand nombre d'éléments, tandis que chaque élément appartient à un univers précis.
+
+Les relations entre les **personnages** et les **factions**, ainsi qu'entre les **personnages** et les **événements**, sont de type plusieurs-à-plusieurs (N-N). Elles sont représentées respectivement par les tables pers_faction et pers_evenement.
+
+Enfin, la table **relation** permet d'associer deux personnages entre eux et d'enregistrer la nature de leur lien.
+
+Une règle de cohérence importante devra être respectée : les éléments associés doivent appartenir au même univers. Par exemple, il ne devrait pas être possible d'associer un personnage d'un univers à une faction appartenant à un autre univers.
+
+Les clés étrangères définies dans le schéma garantissent que les enregistrements référencés existent, mais elles ne suffisent pas à vérifier qu'ils appartiennent au même univers. Cette règle devra donc être appliquée dans le backend Express ou renforcée par des contraintes SQL supplémentaires.
+
+La confidentialité des univers devra également être contrôlée par l'application. Le champ **est_public** indique la visibilité prévue, mais ne garantit pas à lui seul la protection des données. Le serveur devra vérifier les autorisations avant de permettre l'accès ou la modification d'un univers.
+
+Concernant les suppressions, j'ai utilisé **ON DELETE CASCADE** dans les tables d'association. Ainsi, lorsqu'un personnage, une faction ou un événement est supprimé, les associations correspondantes sont automatiquement retirées.
+
+Pour les autres relations, PostgreSQL utilise le comportement par défaut **NO ACTION**. Il faudra donc gérer les éléments dépendants avant de supprimer certains enregistrements, comme un univers contenant encore des personnages.
+
+
+
+## 4. Justification des choix de modélisation
+
+La conception de ce schéma m'a permis de mieux comprendre les relations entre les différentes composantes de Lore Weaver.
+
+J'ai d'abord choisi de séparer les utilisateurs de leurs univers, puis les univers des éléments qui les composent. Cette organisation évite de répéter inutilement certaines informations. Par exemple, il n'est pas nécessaire d'enregistrer l'identifiant de l'utilisateur dans chaque personnage, puisque son propriétaire peut être retrouvé à partir de l'univers auquel il appartient.
+
+J'ai également choisi d'utiliser des tables d'association pour représenter les relations plusieurs-à-plusieurs. Initialement, je ne voyais pas nécessairement l'utilité de créer des tables distinctes pour certaines associations. Cependant, j'ai compris qu'un simple champ contenant l'identifiant d'une faction ou d'un événement limiterait les possibilités de l'application. 
+
+Grâce aux tables **pers_faction** et **pers_evenement**, un personnage peut maintenant être associé à plusieurs factions ou événements sans devoir dupliquer ses informations. Cette structure permet également de conserver des renseignements propres à chaque association, comme le rôle d'un personnage dans une faction ou lors d'un événement.
+
+La table **relation** répond à un besoin légèrement différent : elle permet de représenter les liens narratifs entre deux personnages. J'ai donc choisi d'utiliser deux clés étrangères vers la table **personnage**, afin de distinguer le personnage source du personnage cible.
+
+Enfin, le schéma demeure volontairement limité aux fonctionnalités actuellement envisagées. D'autres relations, notamment entre les personnages et les lieux ou entre les factions et les événements, pourraient être ajoutées ultérieurement si les besoins du projet évoluent.
+
+Ces choix reflètent ma compréhension du domaine du *worldbuilding*, dans lequel les éléments d'un univers possèdent leurs propres caractéristiques tout en étant étroitement liés entre eux.
+
+
+## 5. État de l'implémentation et prochaines étapes
+
+Ce document présente le modèle de données prévu pour Lore Weaver. Il ne signifie pas que toutes les fonctionnalités associées aux tables sont déjà développées. À cette étape du projet, PostgreSQL a été configuré et sa connexion avec Node.js et Express a été vérifiée. 
+
+Les prochaines étapes consisteront notamment à développer l'inscription et la connexion des utilisateurs, puis à permettre la création et la gestion des univers à partir de l'application web.
+
+Le schéma pourra évoluer au cours du développement, mais il constitue actuellement une base relationnelle cohérente pour organiser les données de Lore Weaver et guider l'implémentation des prochaines fonctionnalités.
